@@ -19,13 +19,13 @@ To install the AvantDPLA plugin, follow these steps:
 
 1. First install and activate the [AvantCommon](https://github.com/gsoules/AvantCommon) and
 [OaiPmhRepository](https://github.com/zerocrates/OaiPmhRepository) plugins.
-1. Unzip the AvantDPLA-master file into your Omeka installation's plugin directory.
+1. Unzip the AvantDpla-master file into your Omeka installation's plugin directory.
 1. Rename the folder to AvantDpla.
 1. Activate the plugin from the Admin → Settings → Plugins page.
 
 ## Warning
 
-Use it at your own risk.
+Use at your own risk.
 
 ##  License
 
