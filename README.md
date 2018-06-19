@@ -1,4 +1,4 @@
-# AvantDpla
+# AvantDPLA
 #################################################
 
 > **This plugin is under development. Please wait for Release 2.0.**
