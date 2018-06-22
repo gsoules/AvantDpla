@@ -1,42 +1,12 @@
 <?php
-/**
- * @package OaiPmhRepository
- * @subpackage MetadataFormats
- * @copyright Copyright 2009-2014 John Flatness, Yu-Hsun Lin
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
- */
 
-/**
- * Class implmenting metadata output for the required oai_dc metadata format.
- * oai_dc is output of the 15 unqualified Dublin Core fields.
- *
- * @package OaiPmhRepository
- * @subpackage Metadata Formats
- */
 class SwhplOaiDc implements OaiPmhRepository_Metadata_FormatInterface
 {
-    /** OAI-PMH metadata prefix */
-    const METADATA_PREFIX = 'oai_dc';
-
-    /** XML namespace for output format */
     const METADATA_NAMESPACE = 'http://www.openarchives.org/OAI/2.0/oai_dc/';
-
-    /** XML schema for output format */
     const METADATA_SCHEMA = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
-
-    /** XML namespace for unqualified Dublin Core */
     const DC_NAMESPACE_URI = 'http://purl.org/dc/elements/1.1/';
-
-    /** XML namespace for DC terms */
     const DCTERMS_NAMESPACE_URI = 'http://purl.org/dc/terms/';
 
-    /**
-     * Appends Dublin Core metadata.
-     *
-     * Appends a metadata element, an child element with the required format,
-     * and further children for each of the Dublin Core fields present in the
-     * item.
-     */
     public function appendMetadata($item, $metadataElement)
     {
         $document = $metadataElement->ownerDocument;
@@ -48,35 +18,51 @@ class SwhplOaiDc implements OaiPmhRepository_Metadata_FormatInterface
         $oai_dc->declareSchemaLocation(self::METADATA_NAMESPACE, self::METADATA_SCHEMA);
 
         $dcElementNames = array(
-            'title', 'creator', 'subject', 'description', 'publisher', 'date', 'type', 'identifier', 'rights', 'place');
+            'Title', 'Creator', 'Subject', 'Description', 'Publisher', 'Date', 'Type', 'Identifier', 'Rights', 'Place');
 
         $oai_dc->appendNewElement('dc:contributor', 'Southwest Harbor Public Library');
 
         foreach ($dcElementNames as $elementName)
         {
-            $upperName = Inflector::camelize($elementName);
-            $setName = $elementName == 'place' ? 'Item Type Metadata' : 'Dublin Core';
-            $dcElements = $item->getElementTexts($setName, $upperName);
+            $setName = $elementName == 'Place' ? 'Item Type Metadata' : 'Dublin Core';
+            $dcElements = $item->getElementTexts($setName, $elementName);
             $text = empty($dcElements) ? '' : $dcElements[0]->text;
 
-            if ($elementName == 'identifier')
-                $this->appendIdentifierMetadata($oai_dc, $item);
-            elseif ($elementName == 'subject')
-                $this->appendSubjectMetadata($oai_dc, $dcElements);
-            elseif ($elementName == 'type')
-                $this->appendTypeMetadata($oai_dc, $text);
-            elseif ($elementName == 'date')
-                $this->appendDateMetadata($oai_dc, $text);
-            elseif ($elementName == 'description')
-                $this->appendDescriptionMetadata($oai_dc, $text);
-            elseif ($elementName == 'place')
-                $this->appendPlaceMetadata($oai_dc, $item, $text);
-            else
+            switch ($elementName)
             {
-                foreach ($dcElements as $elementText)
-                {
-                    $oai_dc->appendNewElement('dc:' . $elementName, $elementText->text);
-                }
+                case 'Identifier':
+                    $this->appendIdentifierMetadata($oai_dc, $item);
+                    break;
+
+                case 'Subject':
+                    $this->appendSubjectMetadata($oai_dc, $dcElements);
+                    break;
+
+                case 'Type':
+                    $this->appendTypeMetadata($oai_dc, $text);
+                    break;
+
+                case 'Date':
+                    $this->appendDateMetadata($oai_dc, $text);
+                    break;
+
+                case 'Description':
+                    $this->appendDescriptionMetadata($oai_dc, $text);
+                    break;
+
+                case 'Rights':
+                    $this->appendRightsMetadata($oai_dc, $text);
+                    break;
+
+                case 'Place':
+                    $this->appendPlaceMetadata($oai_dc, $item, $text);
+                    break;
+
+                default:
+                    foreach ($dcElements as $elementText)
+                    {
+                        $oai_dc->appendNewElement('dc:' . strtolower($elementName), $elementText->text);
+                    }
             }
         }
     }
@@ -142,6 +128,12 @@ class SwhplOaiDc implements OaiPmhRepository_Metadata_FormatInterface
         }
     }
 
+    protected function appendRightsMetadata($oai_dc, $text)
+    {
+        $url = DigitalArchive::convertRightsToUrl($text);
+        $oai_dc->appendNewElement('dc:rights', $url);
+    }
+
     protected function appendSubjectMetadata($oai_dc, $dcElements)
     {
         // Create an array of unique subject values from the item's subject element(s).
@@ -177,17 +169,17 @@ class SwhplOaiDc implements OaiPmhRepository_Metadata_FormatInterface
         {
             if ($index == 0)
             {
-                $type = $parts[0];
-                if ($type == 'Article' || $type == 'Document' || $type == 'Publication')
+                $type = strtolower($parts[0]);
+                if ($type == 'article' || $type == 'document' || $type == 'publication')
                 {
-                    $oai_dc->appendNewElement('dc:type', 'Text');
-                    if ($type == 'Article')
+                    $oai_dc->appendNewElement('dc:type', 'text');
+                    if ($type == 'article')
                         break;
                 }
-                elseif ($type == 'Map')
+                elseif ($type == 'map')
                 {
-                    $oai_dc->appendNewElement('dc:type', 'Image');
-                    $oai_dc->appendNewElement('dc:format', 'Map');
+                    $oai_dc->appendNewElement('dc:type', 'image');
+                    $oai_dc->appendNewElement('dc:format', 'map');
                     break;
                 }
                 else
