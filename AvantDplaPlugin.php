@@ -20,10 +20,11 @@ class AvantDplaPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function filterOaiPmhRepositoryMetadataFormats($class)
     {
-        // Return only the class used for DPLA.
-
+        // Remove support for all classes.
         $class = array();
-        $class ['swhpl'] = array(
+
+        // Return only the class used by this installation for DPLA.
+        $class ['oai_dc'] = array(
             'class' => 'SwhplOaiDc',
             'namespace' => OaiPmhRepository_Metadata_OaiDc::METADATA_NAMESPACE,
             'schema' => OaiPmhRepository_Metadata_OaiDc::METADATA_SCHEMA);

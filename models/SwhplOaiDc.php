@@ -170,10 +170,10 @@ class SwhplOaiDc implements OaiPmhRepository_Metadata_FormatInterface
             if ($index == 0)
             {
                 $type = strtolower($parts[0]);
-                if ($type == 'article' || $type == 'document' || $type == 'publication')
+                if ($type == 'reference' || $type == 'document' || $type == 'publication')
                 {
                     $oai_dc->appendNewElement('dc:type', 'text');
-                    if ($type == 'article')
+                    if ($type == 'reference')
                         break;
                 }
                 elseif ($type == 'map')
