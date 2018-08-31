@@ -1,9 +1,4 @@
 # AvantDPLA
-#################################################
-
-> **This plugin is under development. Please wait for Release 1.0.**
-
-#################################################
 
 The AvantDPLA plugin emits XML for ingestion into DPLA via the Maine State Library service hub.
 
