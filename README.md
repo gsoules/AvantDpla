@@ -1,26 +1,10 @@
 # AvantDPLA
 
-The AvantDPLA plugin emits XML for ingestion into DPLA via the Maine State Library service hub.
-
-This version is not yet configurable. It is hard-coded for the Southwest Harbor Public Library's metadata.
-
-## Dependencies
-The AvantDPLA plugin requires that the [AvantCommon](https://github.com/gsoules/AvantCommon) and
-[OaiPmhRepository](https://github.com/zerocrates/OaiPmhRepository) plugins be installed and activated.
-
-## Installation
-
-To install the AvantDPLA plugin, follow these steps:
-
-1. First install and activate the [AvantCommon](https://github.com/gsoules/AvantCommon) and
-[OaiPmhRepository](https://github.com/zerocrates/OaiPmhRepository) plugins.
-1. Unzip the AvantDpla-master file into your Omeka installation's plugin directory.
-1. Rename the folder to AvantDpla.
-1. Activate the plugin from the Admin → Settings → Plugins page.
+Documentation for this plugin is located at <https://digitalarchive.us/plugins/avantdpla/>. 
 
 ## Warning
 
-Use at your own risk.
+Use this software at your own risk.
 
 ##  License
 
@@ -43,6 +27,5 @@ this program; if not, write to the Free Software Foundation, Inc.,
 Copyright
 ---------
 
-* Created by [gsoules](https://github.com/gsoules)
-* Copyright George Soules, 2018.
-* See [LICENSE](https://github.com/gsoules/AvantDpla/blob/master/LICENSE) for more information.
+* Created by [gsoules](https://github.com/gsoules) 
+* Copyright George Soules, 2016-2022.
